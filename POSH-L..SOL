@@ -1,0 +1,71 @@
+# posh-L-.sol// SPDX-License-Identifier: MIT
+// Copyright (c) 2024 Lucas Januário do Nascimento "Z Bits"
+
+pragma solidity ^0.8.0;
+
+contract PoshSec {
+    // Estado do contrato
+    address public owner;
+    mapping(address => uint256) public stakingBalance;
+    mapping(address => bool) public hasStaked;
+    mapping(address => bool) public isStaking;
+
+    // Modificadores
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Only owner can call this function.");
+        _;
+    }
+
+    // Eventos
+    event Staked(address indexed staker, uint256 amount);
+    event Unstaked(address indexed staker, uint256 amount);
+    event RewardClaimed(address indexed staker, uint256 amount);
+
+    // Construtor
+    constructor() {
+        owner = msg.sender;
+    }
+
+    // Função para realizar o stake de tokens
+    function stakeTokens(uint256 _amount) public {
+        require(_amount > 0, "Amount cannot be zero.");
+
+        // Transferir tokens para o contrato
+        // (deve ser implementado)
+
+        // Atualizar estado
+        stakingBalance[msg.sender] += _amount;
+        hasStaked[msg.sender] = true;
+        isStaking[msg.sender] = true;
+
+        emit Staked(msg.sender, _amount);
+    }
+
+    // Função para retirar tokens do stake
+    function unstakeTokens() public {
+        uint256 balance = stakingBalance[msg.sender];
+        require(balance > 0, "Balance cannot be zero.");
+
+        // Transferir tokens de volta ao usuário
+        // (deve ser implementado)
+
+        // Atualizar estado
+        stakingBalance[msg.sender] = 0;
+        isStaking[msg.sender] = false;
+
+        emit Unstaked(msg.sender, balance);
+    }
+
+    // Função para reivindicar recompensas
+    function claimRewards() public {
+        // Lógica para calcular e transferir as recompensas
+        // (deve ser implementado)
+
+        emit RewardClaimed(msg.sender, 0); // Emitir evento de recompensa reivindicada
+    }
+
+    // Função para atualizar o endereço do proprietário
+    function updateOwner(address _newOwner) public onlyOwner {
+        owner = _newOwner;
+    }
+}
